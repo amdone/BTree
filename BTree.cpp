@@ -6,6 +6,7 @@
  */
 
 #include "BTree.h"
+using std::cout;
 
 template<class K,class E>
 BTree<K,E>::BTree(){
@@ -64,25 +65,26 @@ void BTree<K,E>::insert(const std::pair<const K,E>&thePair){
 	else{
 		root->insertNoFull(thePair);
 	}
+	++treeSize;
 }
 
 
 template<class T>
 void BTreeNode<T>::insertNoFull(T theElement){
-	int i = M;
+	int i = rank;
 
 	if(leaf){
 		while(0 <= i && theElement < element[i]){
 			element[1+i] = element[i];
 			--i;
 		}
-		element[++i] = theElement;
+		element[i+1] = theElement;
 		++keyNum;
 	}
 	else{
 		while(0 <= i && theElement <element[i])--i;
 
-		if(child[i+1]->keyNum == M){
+		if(child[i+1]->keyNum == rank){
 			splitChild(i+1,child[i+1]);
 
 			if(theElement > element[i+1]) ++i;
@@ -96,19 +98,19 @@ void BTreeNode<T>::insertNoFull(T theElement){
 template<class T>
 void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
 	BTreeNode *tmp = new BTreeNode(rank,fullNode->leaf);
-	tmp->keyNum = M/2;
+	tmp->keyNum = rank/2;
 
-	for(int i = 0;i < M/2; i++){
-		tmp->element[i] = fullNode->element[i+(M+1)/2];
+	for(int i = 0;i < rank/2; i++){
+		tmp->element[i] = fullNode->element[i+(rank+1)/2];
 	}
 
 	if(!fullNode->leaf){
-		for(int i = 0;i<(M+1)/2;i++){
-			tmp->child[i] = fullNode->child[i+(M+1)/2];
+		for(int i = 0;i<(rank+1)/2;i++){
+			tmp->child[i] = fullNode->child[i+(rank+1)/2];
 		}
 	}
 
-	fullNode->keyNum = M/2;
+	fullNode->keyNum = rank/2;
 
 	for(int i = keyNum;i >= index+1; i--){
 		child[i+1] = child[i];
@@ -120,10 +122,27 @@ void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
 		element[i+1] = element[i];
 	}
 
-	element[index] = fullNode->element[M/2];
+	element[index] = fullNode->element[rank/2];
 
 	keyNum++;
 
+}
+
+template<class T>
+void BTreeNode<T>::output(){
+	int i;
+	for(i=0;i<keyNum;i++){
+		if(!leaf){
+			child[i]->output();
+			cout<<element[i]<<" ";
+		}
+	}
+	if(!leaf) child[i]->output();
+}
+
+template<class K,class E>
+void BTree<K,E>::output(){
+	root->output();
 }
 
 template<class K,class E>
