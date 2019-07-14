@@ -71,7 +71,7 @@ void BTree<K,E>::insert(const std::pair<const K,E>&thePair){
 
 template<class T>
 void BTreeNode<T>::insertNoFull(T theElement){
-	int i = rank;
+	int i = keyNum-1;
 
 	if(leaf){
 		while(0 <= i && theElement < element[i]){
@@ -130,23 +130,29 @@ void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
 
 template<class T>
 void BTreeNode<T>::output(){
-	int i;
-	for(i=0;i<keyNum;i++){
-		if(!leaf){
+	if(leaf){
+		for(int i = 0;i<keyNum;i++){
+			cout<<element[i]<<" ";
+		}
+	}
+	int i=0;
+	for(;i<keyNum;i++){
+		if(leaf == false){
 			child[i]->output();
 			cout<<element[i]<<" ";
 		}
 	}
-	if(!leaf) child[i]->output();
+	if(leaf == false)child[i]->output();
 }
+
+
 
 template<class K,class E>
 void BTree<K,E>::output(){
-	root->output();
+	 if (root != NULL) root->output();
 }
 
 template<class K,class E>
 bool operator>(const std::pair<const K,E>& a,std::pair<K,E>& b){
 	return a.first > b.first;
 }
-
