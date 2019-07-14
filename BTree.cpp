@@ -82,12 +82,12 @@ void BTreeNode<T>::insertNoFull(T theElement){
 	else{
 		while(0 <= i && theElement <element[i])--i;
 
-		if(child[i+1].keyNum == M){
+		if(child[i+1]->keyNum == M){
 			splitChild(i+1,child[i+1]);
 
 			if(theElement > element[i+1]) ++i;
 		}
-		child[i+1].insertNoFull(theElement);
+		child[i+1]->insertNoFull(theElement);
 	}
 
 }
@@ -126,6 +126,8 @@ void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
 
 }
 
-
-
+template<class K,class E>
+bool operator>(const std::pair<const K,E>& a,std::pair<K,E>& b){
+	return a.first > b.first;
+}
 
