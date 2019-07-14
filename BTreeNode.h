@@ -1,7 +1,7 @@
 /*
  * BTreeNode.h
  *
- *  Created on: 2019Äê7ÔÂ13ÈÕ
+ *  Created on: 2019å¹´7æœˆ13æ—¥
  *      Author: Eichi
  */
 #define M 3
@@ -12,16 +12,35 @@
 //using namespace std;
 template <class T>
 struct BTreeNode{
+	int rank;
 	int keyNum;
 	bool leaf;
-	T element[M];
+	T *element;
 
-	BTreeNode *child[M+1];
+	BTreeNode **child;
 
-	BTreeNode() :element(T()){
+	BTreeNode(){
+		rank = 0;
+		element = NULL;
 		keyNum = 0;
 		child = NULL;
 		leaf = true;
+	}
+
+	BTreeNode(int rank){
+		this->rank = rank;
+		element = new T[rank];
+		keyNum = 0;
+		leaf = true;
+		child = new BTreeNode*[rank+1];
+	}
+
+	BTreeNode(int rank,bool leaf){
+		this->rank = rank;
+		keyNum = 0;
+		this->leaf = leaf;
+		element = new T[rank];
+		child = new BTreeNode*[rank+1];
 	}
 
 	void insertNoFull(T theElement);
