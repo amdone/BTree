@@ -21,7 +21,10 @@ class BTree{
 		BTree(int rank);
 		bool empty() const;
 		int size() const;
+		//bool opeator>(std::pair<const K, E>& thePair) const;
 		void insert(const std::pair<const K, E>& thePair);
+		void output();
+
 
 	private:
 		BTreeNode<std::pair<K,E>> *root;
@@ -31,8 +34,8 @@ class BTree{
 };
 
 template <class K, class E>
-std::ostream& operator<<(std::ostream& out, const std::pair<const K, E>& x){
-	out << x.first << ' ' << x.second;
+std::ostream& operator<<(std::ostream& out,std::pair<K, E>& x){
+	out << x.first << '-' << x.second;
 	return out;
 }
 
