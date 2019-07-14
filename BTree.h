@@ -1,7 +1,7 @@
 /*
  * BTree.h
  *
- *  Created on: 2019Äê7ÔÂ13ÈÕ
+ *  Created on: 2019å¹´7æœˆ13æ—¥
  *      Author: Eichi
  */
 
@@ -16,7 +16,9 @@ template<class K,class E>
 class BTree{
 	public:
 		BTree();
+
 		~BTree();
+		BTree(int rank);
 		bool empty() const;
 		int size() const;
 		void insert(const std::pair<const K, E>& thePair);
@@ -24,7 +26,7 @@ class BTree{
 	private:
 		BTreeNode<std::pair<K,E>> *root;
 		int treeSize;
-		int rank = M;
+		int rank;
 
 };
 
