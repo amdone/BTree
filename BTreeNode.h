@@ -4,7 +4,6 @@
  *  Created on: 2019年7月13日
  *      Author: Eichi
  */
-#define M 3
 
 #ifndef SRC_BTREENODE_H_
 #define SRC_BTREENODE_H_
@@ -45,6 +44,7 @@ struct BTreeNode{
 
 	void insertNoFull(T theElement);
 	void splitChild(int index,BTreeNode *y);
+	void output();
 
 };
 
