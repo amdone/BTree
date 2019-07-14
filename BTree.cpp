@@ -1,7 +1,7 @@
 /*
  * BTree.cpp
  *
- *  Created on: 2019Äê7ÔÂ13ÈÕ
+ *  Created on: 2019å¹´7æœˆ13æ—¥
  *      Author: Eichi
  */
 
@@ -9,6 +9,14 @@
 
 template<class K,class E>
 BTree<K,E>::BTree(){
+	root = NULL;
+	treeSize = 0;
+	rank = 0;
+}
+
+template<class K,class E>
+BTree<K,E>::BTree(int rank){
+	this->rank = rank;
 	root = NULL;
 	treeSize = 0;
 }
@@ -36,14 +44,13 @@ int BTree<K,E>::size() const {
 template<class K, class E>
 void BTree<K,E>::insert(const std::pair<const K,E>&thePair){
 	if(NULL == root){
-		root = new BTreeNode<std::pair<K,E>>();
+		root = new BTreeNode<std::pair<K,E>>(rank,true);
 		root->element[0] = thePair;
 		root->keyNum = 1;
 
 	}
 	else if(root->keyNum == rank){
-		BTreeNode<std::pair<K,E>> *tmp = new BTreeNode<std::pair<K,E>>();
-		tmp->leaf = false;
+		BTreeNode<std::pair<K,E>> *tmp = new BTreeNode<std::pair<K,E>>(rank,false);
 		tmp->child[0] = root;
 		tmp->splitChild(0,root);
 
@@ -88,8 +95,7 @@ void BTreeNode<T>::insertNoFull(T theElement){
 
 template<class T>
 void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
-	BTreeNode *tmp = new BTreeNode();
-	tmp->leaf = fullNode->leaf;
+	BTreeNode *tmp = new BTreeNode(rank,fullNode->leaf);
 	tmp->keyNum = M/2;
 
 	for(int i = 0;i < M/2; i++){
@@ -119,4 +125,7 @@ void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
 	keyNum++;
 
 }
+
+
+
 
