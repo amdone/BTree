@@ -24,12 +24,16 @@ class BTree{
 		//bool opeator>(std::pair<const K, E>& thePair) const;
 		void insert(const std::pair<const K, E>& thePair);
 		void output();
-
-
+		void outTest();
+		int BTreeMaximum(BTreeNode<std::pair<K,E>> *x );
+		int BTreeMinimum( BTreeNode<std::pair<K,E>> *x );
+		void BTreeDelete( BTreeNode<std::pair<K,E>> *&x, int k );
 	private:
 		BTreeNode<std::pair<K,E>> *root;
 		int treeSize;
 		int rank;
+		BTreeNode<std::pair<K,E>> pointerCollector;
+
 
 };
 
