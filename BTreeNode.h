@@ -11,15 +11,12 @@
 //using namespace std;
 template <class T>
 struct BTreeNode{
-	int rank;
 	int keyNum;
 	bool leaf;
 	T *element;
-
 	BTreeNode **child;
 
 	BTreeNode(){
-		rank = 0;
 		element = NULL;
 		keyNum = 0;
 		child = NULL;
@@ -27,7 +24,6 @@ struct BTreeNode{
 	}
 
 	BTreeNode(int rank){
-		this->rank = rank;
 		element = new T[rank];
 		keyNum = 0;
 		leaf = true;
@@ -35,17 +31,24 @@ struct BTreeNode{
 	}
 
 	BTreeNode(int rank,bool leaf){
-		this->rank = rank;
 		keyNum = 0;
 		this->leaf = leaf;
 		element = new T[rank];
 		child = new BTreeNode*[rank+1];
 	}
 
-	void insertNoFull(T theElement);
-	void splitChild(int index,BTreeNode *y);
+	void insertNoFull(int rank,T theElement);
+	void splitChild(int rank,int index,BTreeNode *y);
 	void output();
 
 };
 
+
+
+
 #endif /* SRC_BTREENODE_H_ */
+
+
+
+
+
