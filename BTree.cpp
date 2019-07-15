@@ -7,12 +7,14 @@
 
 #include "BTree.h"
 using std::cout;
+using std::endl;
 
 template<class K,class E>
 BTree<K,E>::BTree(){
 	root = NULL;
 	treeSize = 0;
 	rank = 0;
+
 }
 
 template<class K,class E>
@@ -20,6 +22,8 @@ BTree<K,E>::BTree(int rank){
 	this->rank = rank;
 	root = NULL;
 	treeSize = 0;
+//	for(int i = 0;i<=rank;i++)
+//	this->pointerCollector.child[i]=pointerCollector;
 }
 
 
@@ -53,24 +57,24 @@ void BTree<K,E>::insert(const std::pair<const K,E>&thePair){
 	else if(root->keyNum == rank){
 		BTreeNode<std::pair<K,E>> *tmp = new BTreeNode<std::pair<K,E>>(rank,false);
 		tmp->child[0] = root;
-		tmp->splitChild(0,root);
+		tmp->splitChild(rank,0,root);
 
 		if(thePair > tmp->element[0]){
-			tmp->child[1]->insertNoFull(thePair);
+			tmp->child[1]->insertNoFull(rank,thePair);
 		}
-		else tmp->child[0]->insertNoFull(thePair);
+		else tmp->child[0]->insertNoFull(rank,thePair);
 
 		root = tmp;
 	}
 	else{
-		root->insertNoFull(thePair);
+		root->insertNoFull(rank,thePair);
 	}
 	++treeSize;
 }
 
 
 template<class T>
-void BTreeNode<T>::insertNoFull(T theElement){
+void BTreeNode<T>::insertNoFull(int rank,T theElement){
 	int i = keyNum-1;
 
 	if(leaf){
@@ -85,18 +89,18 @@ void BTreeNode<T>::insertNoFull(T theElement){
 		while(0 <= i && theElement <element[i])--i;
 
 		if(child[i+1]->keyNum == rank){
-			splitChild(i+1,child[i+1]);
+			splitChild(rank,i+1,child[i+1]);
 
 			if(theElement > element[i+1]) ++i;
 		}
-		child[i+1]->insertNoFull(theElement);
+		child[i+1]->insertNoFull(rank,theElement);
 	}
 
 }
 
 
 template<class T>
-void BTreeNode<T>::splitChild(int index,BTreeNode *fullNode){
+void BTreeNode<T>::splitChild(int rank,int index,BTreeNode *fullNode){
 	BTreeNode *tmp = new BTreeNode(rank,fullNode->leaf);
 	tmp->keyNum = rank/2;
 
@@ -147,10 +151,20 @@ void BTreeNode<T>::output(){
 
 
 
+
+
 template<class K,class E>
 void BTree<K,E>::output(){
 	 if (root != NULL) root->output();
 }
+
+template<class K,class E>
+void BTree<K,E>::outTest(){
+	 cout<<"element[0]-> "<<root->element[0]<<endl;
+	 cout<<"element[1]-> "<<root->element[1]<<endl;
+	 cout<<"element[2]-> "<<root->element[2]<<endl;
+}
+
 
 template<class K,class E>
 bool operator>(const std::pair<const K,E>& a,std::pair<K,E>& b){
