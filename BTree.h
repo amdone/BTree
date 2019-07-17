@@ -23,9 +23,9 @@ class BTree{
 		int size() const;
 		//bool opeator>(std::pair<const K, E>& thePair) const;
 		void insert(const std::pair<const K, E>& thePair);
-		E SearchTree(BTreeNode<std::pair<K,E>> *r,K& theKey);
-		int SearchNode(BTreeNode<std::pair<K,E>> *r,K& k);
-		E find( K theKey) ;
+//		E SearchTree(BTreeNode<std::pair<K,E>> *r,K& theKey);
+//		int SearchNode(BTreeNode<std::pair<K,E>> *r,K& k);
+//		E find( K theKey) ;
 		void output();
 		void outTest();
 		void BTree_print(BTreeNode<std::pair<K,E>> *r, BTreeNode<std::pair<K,E>> *pc,int layer);
