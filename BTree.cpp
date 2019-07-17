@@ -90,20 +90,25 @@ void BTree<K,E>::insert(const std::pair<const K,E>&thePair){
 
 			root = tmp;
 		}
-		root->insertNoFull(rank,thePair,pointerCollector);
+		else
+			root->insertNoFull(rank,thePair,pointerCollector);
 	}
+
 	else
 		root->insertNoFull(rank,thePair,pointerCollector);
+	if(root->keyNum == rank){
+		BTreeNode<std::pair<K,E>> *newRoot = new BTreeNode<std::pair<K,E>>(rank,false);
+					for(int i = 0;i<rank;i++) {
+						newRoot->element[i] = std::pair<K,E>();
+						newRoot->child[i] = pointerCollector;
+					}
+					newRoot->child[0] = root;
+					newRoot->splitChild(rank,0,root,pointerCollector);
+
+					root = newRoot;
+	}
 	++treeSize;
 }
-
-
-template<class T>
-std::pair<T,BTreeNode<T>**>* BTreeNode<T>::insertFull(int rank,T theElement,BTreeNode<T>* pc,BTreeNode<T> * root){
-	BTreeNode<T>* r = new BTreeNode<T>(rank,true);
-
-}
-
 
 
 template<class T>
@@ -162,11 +167,19 @@ void BTreeNode<T>::splitChild(int rank,int index,BTreeNode *fullNode,BTreeNode *
 		fullNode->element[i+rank/2+1] = T();
 	}
 
-	if(!fullNode->leaf){
+	if(fullNode->keyNum == rank){
+		for(int i = 0;i<rank/2+1;i++){
+			tmp->child[i] = fullNode->child[i+rank/2+1];
+		}
+	}
+
+	else if(!fullNode->leaf){
 		for(int i = 0;i<rank/2;i++){
 			tmp->child[i] = fullNode->child[i+rank/2];
 		}
 	}
+
+
 
 	fullNode->keyNum = rank/2;
 
@@ -193,45 +206,6 @@ void BTreeNode<T>::splitChild(int rank,int index,BTreeNode *fullNode,BTreeNode *
 
 }
 
-template<class K,class E>
-int BTree<K,E>::SearchNode(BTreeNode<std::pair<K,E>> *r,K& k){
-	int i = r->keyNum-1;
-	if(k > r->element[i].first)
-		return r->keyNum;
-	while(i > 0)
-	{
-		if(k == r->element[i].first)
-			return -1;
-		else
-			if(k > r->element[i-1].first)
-				return i;
-		--i;
-	}
-	return 0;
-}
-
-
-template<class K,class E>
-E BTree<K,E>::SearchTree(BTreeNode<std::pair<K,E>> *r,K& theKey){
-	while(r != pointerCollector)
-	{
-		int found = 0;
-		found = SearchNode(r,theKey);
-		if(found == -1)
-			return r->element[found].first;
-		else
-			SearchTree(r->child[found],theKey);
-	}
-	return -99999;
-}
-
-
-template<class K,class E>
-E BTree<K,E>::find(K theKey) {
-	BTreeNode<std::pair<K, E> > *p = this->root;
-
-	return SearchTree(p,theKey);
-}
 
 
 template<class T>
@@ -252,9 +226,6 @@ void BTreeNode<T>::output(){
 }
 
 
-
-
-
 template<class K,class E>
 void BTree<K,E>::output(){
 	 if (root != NULL) root->output();
@@ -263,21 +234,7 @@ void BTree<K,E>::output(){
 
 template<class K,class E>
 void BTree<K,E>::outTest(){
-	 cout<<"element[0]-> "<<root->element[0]<<endl;
-	 cout<<"element[1]-> "<<root->element[1]<<endl;
-	 cout<<"element[2]-> "<<root->element[2]<<endl;
-//	 cout<<"child[0]->0-> "<<root->child[0]->element[0]<<endl;
-//	 cout<<"child[0]->1-> "<<root->child[0]->element[1]<<endl;
-//	 cout<<"child[0]->2-> "<<root->child[0]->element[2]<<endl;
-//	 cout<<"child[1]->0-> "<<root->child[1]->element[0]<<endl;
-//	 cout<<"child[1]->1-> "<<root->child[1]->element[1]<<endl;
-//	 cout<<"child[1]->2-> "<<root->child[1]->element[2]<<endl;
-//	 cout<<"child[2]->0-> "<<root->child[2]->element[0]<<endl;
-//	 cout<<"child[2]->1-> "<<root->child[2]->element[1]<<endl;
-//	 cout<<"child[2]->2-> "<<root->child[2]->element[2]<<endl;
-//	 cout<<"child[3]->0-> "<<root->child[3]->element[0]<<endl;
-//	 cout<<"child[3]->1-> "<<root->child[3]->element[1]<<endl;
-//	 cout<<"child[3]->2-> "<<root->child[3]->element[2]<<endl;
+
 }
 
 template<class K,class E>
@@ -287,15 +244,14 @@ void BTree<K,E>::BTree_print(BTreeNode<std::pair<K,E>> *r, BTreeNode<std::pair<K
     BTreeNode<std::pair<K,E>>* node = r;
 
     if (node != pc) {
-        printf("第 %d 层， %d node : ", layer, node->keyNum);
 
-        //打印出结点中的全部元素，方便调试查看keyNum之后的元素是否为0(即是否存在垃圾数据)；而不是keyNum个元素。
+        cout<<"第"<<layer<<"层 , "<<node->keyNum<<"个key: ";
+
         for (i = 0; i < node->keyNum; ++i) {
-        //for (i = 0; i < node->keyNum; ++i) {
-           cout<<node->element[i].first<<" ";
+           cout<<node->element[i]<<"  ";
         }
 
-        printf("\n");
+        cout<<endl;
 
         ++layer;
         for (i = 0 ; i <= node->keyNum; i++) {
@@ -305,7 +261,7 @@ void BTree<K,E>::BTree_print(BTreeNode<std::pair<K,E>> *r, BTreeNode<std::pair<K
         }
     }
     else {
-        printf("树为空。\n");
+        cout<<"该树为空树！"<<endl;
     }
 }
 
