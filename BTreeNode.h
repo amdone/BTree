@@ -15,14 +15,14 @@ struct BTreeNode{
 	bool leaf;
 	T *element;
 	BTreeNode **child;
-	BTreeNode *_parent;
+	//BTreeNode *_parent;
 
 	BTreeNode(){
 		element = NULL;
 		keyNum = 0;
 		child = NULL;
 		leaf = true;
-		_parent = NULL;
+		//_parent = NULL;
 	}
 
 	BTreeNode(int rank){
@@ -30,7 +30,7 @@ struct BTreeNode{
 		keyNum = 0;
 		leaf = true;
 		child = new BTreeNode*[rank];
-		_parent = NULL;
+		//_parent = NULL;
 	}
 
 	BTreeNode(int rank,bool leaf){
@@ -38,9 +38,8 @@ struct BTreeNode{
 		this->leaf = leaf;
 		element = new T[rank-1];
 		child = new BTreeNode*[rank];
-		_parent = NULL;
+		//_parent = NULL;
 	}
-	std::pair<T,BTreeNode<T>**>* insertFull(int rank,T theElement,BTreeNode * pc,BTreeNode<T>* root);
 	void insertNoFull(int rank,T theElement,BTreeNode* pc);
 	void splitChild(int rank,int index,BTreeNode *y,BTreeNode *pc);
 	void output();
