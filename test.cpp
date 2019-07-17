@@ -29,6 +29,7 @@ int main(){
 //	a.insert(std::pair<int,int>(34,1));
 //	a.insert(std::pair<int,int>(24,1));
 //	a.insert(std::pair<int,int>(29,1));
+//	a.insert(std::pair<int,int>(28,1));
 
 	a.insert(std::pair<int,char>(1,'x'));
 	a.insert(std::pair<int,char>(2,'x'));
@@ -49,7 +50,7 @@ int main(){
 	a.insert(std::pair<int,char>(14,'x'));
 	a.insert(std::pair<int,char>(18,'x'));
 	a.insert(std::pair<int,char>(19,'x'));
-//	a.insert(std::pair<int,char>(15,'x'));
+	a.insert(std::pair<int,char>(15,'x'));
 	//a.outTest();
 	a.output();
 	a.print();
